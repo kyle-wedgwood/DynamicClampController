@@ -1,5 +1,6 @@
 
 # Dynamic clamp controller
+ 25/10/2019
 **Kyle Wedgwood**
 
 This repository contains files to run a lightweight GUI for uploading
@@ -43,7 +44,7 @@ Teensy.
 # Using the GUI
 There are three main windows in the GUI: the main window, the
 configuration window and the settings window. When actually using the
-GUI to control the Teensy, only the main window should be open.
+GUI to control the Teensy, only the main window should be open. If you are using the controller for the first time, you will need to open the configuration window to set up the parameter configuration.
 
 ## Main window
 The main window displays the current parameter values, their minimum and
@@ -55,30 +56,37 @@ minimum value, the set value and the maximum value. Trying to set values
 outside of the allowed range for that parameter will cause the program
 to display an error message.
 
-* Upload
-Uploads the set value to the Teensy and saves the parameters to the file
-*last_used_parameters.mat*.
-
-* Save
-Opens a window to save the current parameter values.
-
 * Load
+
 Opens a window to load a parameter configuration file and resets the
 connection to the Teensy
 
+* Configure
+
+Opens a window to configure the parameter set, including minimum,
+maximum and default values.
+
+* Save
+
+Opens a window to save the current parameter values.
+
+* Upload
+
+Uploads the set value to the Teensy and saves the parameters to the file
+*last_used_parameters.mat*.
+
 * Last
+
 Restores the last used parameter settings (loaded from
 *last_used_parameters.mat*.
 
 * Zero
+
 Sets all of the parameters to 0 and uploads to the Teensy. This does
 **not** overwrite the *last_used_parameters.mat* file.
 
-* Configure
-Opens a window to configure the parameter set, including minimum,
-maximum and default values.
-
 * Settings icon
+
 Opens a window to change settings (currently only the fontsize can be
 changed).
 
@@ -87,20 +95,30 @@ The configuration window facilitates the creation of parameter sets to
 be controlled by the main window. Here, you can set the names of the
 parameters as well as their allowed range.
 
-Please note that the *names* of the parameters do not have to match the
-Arduino sketch, but the *order* in which they appear must.
+Please note that the *names* of the parameters do **not** have to match the
+Arduino sketch, but the *order* in which they appear **must.**
 
 * (+) button
+
 Adds a row for an additional parameter.
 
 * (-) button
-Removes the last parameter row
+
+Removes the last parameter row.
 
 * Save
-Opens a window to save the parameter configuration.
+
+Opens a window to save the parameter configuration. After saving, these parameters and limits will be loaded in the main window and the configuration window will close.
+
+* Cancel
+
+Closes the configuration window without changing parameter configuration.
 
 ## Settings window
 The settings window allows users to change settings associated with the
 DynamicClampController. Note that the settings do not change the way in
 which the controller interacts with the Teensy.
+
+# Feedback
+If you would like to report a bug or make a feature request, please email me at k.c.a.wedgwood@exeter.ac.uk
 
