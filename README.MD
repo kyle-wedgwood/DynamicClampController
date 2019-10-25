@@ -133,5 +133,5 @@ DynamicClampController. Note that the settings do not change the way in
 which the controller interacts with the Teensy.
 
 # Feedback
-If you would like to provide feedback make a feature request, please email me at k.c.a.wedgwood@exeter.ac.uk
+If you would like to provide feedback make a feature request, please email me at k.c.a.wedgwood@exeter.ac.uk.
 For bug reports, please raise a new issue.
