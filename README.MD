@@ -126,7 +126,7 @@ Closes the configuration window without changing parameter configuration.
 
 ![alt text][preferences]
 
-[preferences]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Preferences.png "Preferences window"
+[preferences]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Figs/Preferences.png "Preferences window"
 
 The preferences window allows users to change preferences associated with the
 DynamicClampController. Note that the settings do not change the way in
