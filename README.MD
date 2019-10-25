@@ -49,7 +49,7 @@ GUI to control the Teensy, only the main window should be open. If you are using
 ## Main window
 ![alt text][main]
 
-[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/DynamicClampController.png "Main window"
+[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Figs/DynamicClampController.png "Main window"
 
 The main window displays the current parameter values, their minimum and
 maximum value and buttons to upload, save and load parameters.
@@ -97,7 +97,7 @@ changed).
 ## Configuration window
 ![alt text][main]
 
-[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Configuration.png "Configuration window"
+[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Figs/Configuration.png "Configuration window"
 
 The configuration window facilitates the creation of parameter sets to
 be controlled by the main window. Here, you can set the names of the
@@ -126,7 +126,7 @@ Closes the configuration window without changing parameter configuration.
 
 ![alt text][main]
 
-[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Configuration.png "Configuration window"
+[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Preferences.png "Preferences window"
 
 
 The settings window allows users to change settings associated with the
