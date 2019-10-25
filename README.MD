@@ -49,7 +49,7 @@ GUI to control the Teensy, only the main window should be open. If you are using
 ## Main window
 ![alt text][main]
 
-[main]: https://github.com/kyle-wedgwood/DynamicClampController/DynamicClampController "Main window"
+[main]: https://github.com/kyle-wedgwood/DynamicClampController/DynamicClampController.png "Main window"
 
 The main window displays the current parameter values, their minimum and
 maximum value and six pushbuttons.
