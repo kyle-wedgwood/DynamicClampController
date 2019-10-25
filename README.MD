@@ -52,7 +52,7 @@ GUI to control the Teensy, only the main window should be open. If you are using
 [main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/DynamicClampController.png "Main window"
 
 The main window displays the current parameter values, their minimum and
-maximum value and six pushbuttons.
+maximum value and buttons to upload, save and load parameters.
 
 Each row of parameters contains (in order), the parameter name (this
 does not have to match exactly the name in the Arduino sketch), the
@@ -89,12 +89,16 @@ Restores the last used parameter settings (loaded from
 Sets all of the parameters to 0 and uploads to the Teensy. This does
 **not** overwrite the *last_used_parameters.mat* file.
 
-* Settings icon
+* Preferences icon
 
 Opens a window to change settings (currently only the fontsize can be
 changed).
 
 ## Configuration window
+![alt text][main]
+
+[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Configuration.png "Configuration window"
+
 The configuration window facilitates the creation of parameter sets to
 be controlled by the main window. Here, you can set the names of the
 parameters as well as their allowed range.
@@ -118,7 +122,13 @@ Opens a window to save the parameter configuration. After saving, these paramete
 
 Closes the configuration window without changing parameter configuration.
 
-## Settings window
+## Preferences window
+
+![alt text][main]
+
+[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Configuration.png "Configuration window"
+
+
 The settings window allows users to change settings associated with the
 DynamicClampController. Note that the settings do not change the way in
 which the controller interacts with the Teensy.
