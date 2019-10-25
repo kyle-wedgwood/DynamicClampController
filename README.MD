@@ -95,9 +95,9 @@ Opens a window to change settings (currently only the fontsize can be
 changed).
 
 ## Configuration window
-![alt text][main]
+![alt text][config]
 
-[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Figs/Configuration.png "Configuration window"
+[config]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Figs/Configuration.png "Configuration window"
 
 The configuration window facilitates the creation of parameter sets to
 be controlled by the main window. Here, you can set the names of the
@@ -124,15 +124,14 @@ Closes the configuration window without changing parameter configuration.
 
 ## Preferences window
 
-![alt text][main]
+![alt text][preferences]
 
-[main]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Preferences.png "Preferences window"
+[preferences]: https://github.com/kyle-wedgwood/DynamicClampController/blob/master/Preferences.png "Preferences window"
 
-
-The settings window allows users to change settings associated with the
+The preferences window allows users to change preferences associated with the
 DynamicClampController. Note that the settings do not change the way in
 which the controller interacts with the Teensy.
 
 # Feedback
-If you would like to report a bug or make a feature request, please email me at k.c.a.wedgwood@exeter.ac.uk
-
+If you would like to provide feedback make a feature request, please email me at k.c.a.wedgwood@exeter.ac.uk
+For bug reports, please raise a new issue.
