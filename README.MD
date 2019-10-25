@@ -47,6 +47,10 @@ configuration window and the settings window. When actually using the
 GUI to control the Teensy, only the main window should be open. If you are using the controller for the first time, you will need to open the configuration window to set up the parameter configuration.
 
 ## Main window
+![alt text][main]
+
+[main]: https://github.com/kyle-wedgwood/DynamicClampController/DynamicClampController "Main window"
+
 The main window displays the current parameter values, their minimum and
 maximum value and six pushbuttons.
 
