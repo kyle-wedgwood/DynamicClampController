@@ -20,6 +20,14 @@ classdef DynamicClampController < handle
     box_width = 90
     status_bar
     timer
+    PRC_filename
+    wave_filename
+    PRC_harmonics
+    wave
+    load_PRC_button
+    load_wave_button
+    PRC_file_display
+    wave_file_display
 
   end
 
@@ -45,7 +53,7 @@ classdef DynamicClampController < handle
     
     function obj = DynamicClampController( filename)
 
-%       obj.initialiseCOMPort();
+      obj.initialiseCOMPort();
       if nargin < 1
         filename = 'last_used_pars.mat';
       end
@@ -145,7 +153,7 @@ classdef DynamicClampController < handle
 
     function initialiseCOMPort( obj)
 
-      obj.COMPort = serial( 'COM15', 'BaudRate', 115200);
+      obj.COMPort = serial( 'COM14', 'BaudRate', 115200);
       fopen ( obj.COMPort);
 
       fprintf( 'COM port opened.\n');
@@ -156,8 +164,11 @@ classdef DynamicClampController < handle
 
       vals = single( vertcat( obj.parameters.val, []));
       
+      % Add PRC harmonic and wave
+      vals = [vals; obj.PRC_harmonics(:,1); obj.wave(:,1)];
+
       fwrite( obj.COMPort, typecast( vals, 'uint8'));
-      obj.update_status_bar( 'Values sent to Teensy.\n');
+      obj.update_status_bar( 'Values sent to Teensy');
 
     end
 
@@ -246,14 +257,19 @@ classdef DynamicClampController < handle
 
     function uploadVals( obj, save_flag)
       obj.update_status_bar( 'Uploading values');
-      if save_flag
-        obj.savePars( false);
-      end
       
-      synchronised = false;
-      while ~synchronised
-        obj.writeToTeensy();
-        synchronised = obj.checkSynchronised();
+      if obj.checkFilesLoaded()
+        if save_flag
+          obj.savePars( false);
+        end
+
+        synchronised = false;
+        while ~synchronised
+          obj.writeToTeensy();
+          synchronised = obj.checkSynchronised();
+        end
+      else
+        obj.update_status_bar( 'Aboring upload')
       end
       
     end
@@ -268,7 +284,73 @@ classdef DynamicClampController < handle
       obj.max_labels(:) = [];
       obj.buttons(:) = [];
     end
-
+    
+    function loadPRC( obj)
+      
+      [filename,pathname] = uigetfile( '*');
+      full_path = strcat( pathname, filename);
+      
+      if exist( full_path, 'file')
+        obj.PRC_harmonics = single( load( full_path));
+        obj.PRC_filename = filename;
+        set( obj.PRC_file_display, 'String', filename);
+        obj.update_status_bar( 'PRC harmonics loaded from filename');
+      else
+        wrn = warndlg( 'File not found');
+        htext = findobj( wrn, 'Type', 'Text');  %find text control in dialog
+        htext.FontSize = obj.font_size;
+      end
+      
+      if size( obj.PRC_harmonics, 2) > 1
+        wrn = warndlg( '> 1 column in file');
+        htext = findobj( wrn, 'Type', 'Text');  %find text control in dialog
+        htext.FontSize = obj.font_size;
+      end
+      
+    end
+    
+    function loadWave( obj)
+      
+      [filename,pathname] = uigetfile( '*');
+      full_path = strcat( pathname, filename);
+      
+      if exist( full_path, 'file')
+        obj.wave = single( load( full_path));
+        obj.wave_filename = filename;
+        set( obj.wave_file_display, 'String', filename);
+        obj.update_status_bar( 'Wave data loaded from filename');
+      else
+        wrn = warndlg( 'File not found');
+        htext = findobj( wrn, 'Type', 'Text');  %find text control in dialog
+        htext.FontSize = obj.font_size;
+      end
+      
+      if size( obj.wave, 2) > 1
+        wrn = warndlg( '> 1 column in file');
+        htext = findobj( wrn, 'Type', 'Text');  %find text control in dialog
+        htext.FontSize = obj.font_size;
+      end
+      
+    end
+    
+    function flag = checkFilesLoaded( obj)
+      
+      flag = false;
+      
+      if ~( isempty( obj.PRC_harmonics) || isempty( obj.wave))
+        flag = true;
+      else
+        if isempty( obj.PRC_harmonics);
+          wrn = warndlg( 'PRC not loaded');
+        elseif isempty( obj.wave);
+          wrn = warndlg( 'Wave data not loaded');
+        end
+        htext = findobj( wrn, 'Type', 'Text');  %find text control in dialog
+        htext.FontSize = obj.font_size;
+      end
+      
+    end
+    
     function savePars( obj, input_flag)
 
       if input_flag
@@ -288,7 +370,7 @@ classdef DynamicClampController < handle
     function resizeFigure( obj)
       
       no_pars = length( obj.parameters);
-      fig_height = (no_pars+5)*50;
+      fig_height = (no_pars+10)*50;
       
       pos = get( obj.fig, 'Position');
       pos(4) = fig_height;
@@ -327,7 +409,7 @@ classdef DynamicClampController < handle
     function addButtons( obj, fig)
 
       no_pars = length( obj.parameters);
-      fig_height = (no_pars+7)*obj.box_height;
+      fig_height = (no_pars+9)*obj.box_height;
       set( fig, 'Position', [400, 400, 400, fig_height]);
 
       obj.buttons = gobjects( no_pars, 1);
@@ -372,6 +454,29 @@ classdef DynamicClampController < handle
                 'Visible', 'on');
 
       end
+      
+      obj.load_PRC_button = uicontrol( 'Parent', fig, 'Style', 'togglebutton', ...
+             'String', 'PRC file', 'Units', 'pixels', ...
+             'Position', [20 190 100 30], 'Visible', 'on', ...
+             'Fontsize', obj.font_size,  'ForegroundColor', 'red', ...
+             'Tag', 'loadPRC','Callback', @(~,~) obj.loadPRC());
+           
+      obj.PRC_file_display = uicontrol( 'Parent', fig, 'Style', 'text', ...
+             'String', obj.PRC_filename, 'Units', 'pixels', ...
+             'Position', [120 190 270 30], 'Visible', 'on', ...
+             'Fontsize', obj.font_size);
+           
+      obj.load_wave_button = uicontrol( 'Parent', fig, 'Style', 'pushbutton', ...
+             'String', 'Wave file', 'Units', 'pixels', ...
+             'Position', [20 160 100 30], 'Visible', 'on', ...
+             'Fontsize', obj.font_size,  'ForegroundColor', 'red', ...
+             'Tag', 'loadWave','Callback', @(~,~) obj.loadWave());
+           
+      obj.wave_file_display = uicontrol( 'Parent', fig, 'Style', 'text', ...
+             'String', obj.wave_filename, 'Units', 'pixels', ...
+             'Position', [120 160 270 30], 'Visible', 'on', ...
+             'Fontsize', obj.font_size, ...
+             'Tag', 'zero','Callback', @(~,~) obj.zeroValsUI());
 
       obj.zero_button = uicontrol( 'Parent', fig, 'Style', 'pushbutton', ...
              'String', 'Zero', 'Units', 'pixels', ...
@@ -414,6 +519,15 @@ classdef DynamicClampController < handle
               'Fontsize', 0.8*obj.font_size, ...
               'Position', [15, 5, 350, 30], 'Visible', 'on', ...
               'HorizontalAlignment', 'left');
+            
+      
+      % Update color of load buttons if data are already loaded
+      if ~isempty( obj.PRC_harmonics)
+        set( obj.load_PRC_button, 'ForegroundColor', 'black');
+      end
+      if ~isempty( obj.wave)
+        set( obj.load_wave_button, 'ForegroundColor', 'black');
+      end
            
       im = imread( 'settings.png');
       [im_width,im_height,~]=size( im); 
@@ -443,6 +557,15 @@ classdef DynamicClampController < handle
     end
     
     function reset_status_bar( obj)
+% For testing purposes only
+%       for i = 1:4
+%         val_0 = fscanf( obj.COMPort, '%f');
+%         val_1 = fscanf( obj.COMPort, '%d');
+%         val_2 = fscanf( obj.COMPort, '%d');
+%         val_3 = fscanf( obj.COMPort, '%f');
+%         set( obj.status_bar, 'String', sprintf( '%d, delay: %0.3f, dt: %.3f ms, i_c: %d, i_d: %d', i, val_0, val_3, val_1, val_2));
+%         pause(1);
+%       end
       set( obj.status_bar, 'String', 'Ready');
     end
 
