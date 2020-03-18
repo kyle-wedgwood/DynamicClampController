@@ -165,7 +165,7 @@ classdef DynamicClampController < handle
       vals = single( vertcat( obj.parameters.val, []));
       
       % Add PRC harmonic and wave
-      vals = [vals; obj.PRC_harmonics(:,1); obj.wave(:,1)];
+      vals = [vals; obj.PRC_harmonics(:,1); obj.wave(:,2)];
 
       fwrite( obj.COMPort, typecast( vals, 'uint8'));
       obj.update_status_bar( 'Values sent to Teensy');
